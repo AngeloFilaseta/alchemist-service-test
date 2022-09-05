@@ -2,14 +2,12 @@ import react.*
 import kotlinx.coroutines.*
 import react.dom.html.ReactHTML.h1
 import react.dom.html.ReactHTML.li
-import react.dom.html.ReactHTML.p
 import react.dom.html.ReactHTML.ul
 
 private val scope = MainScope()
 
 val App = FC<Props> {
     var shoppingList by useState(emptyList<ShoppingListItem>())
-    val pList = StringUtil.toChars("hello")
 
     useEffectOnce {
         scope.launch {
@@ -20,6 +18,7 @@ val App = FC<Props> {
     h1 {
         +"Full-Stack Shopping List"
     }
+
     ul {
         shoppingList.sortedByDescending(ShoppingListItem::priority).forEach { item ->
             li {
@@ -32,11 +31,6 @@ val App = FC<Props> {
                 }
                 +"[${item.priority}] ${item.desc} "
             }
-        }
-    }
-    pList.forEach { elem ->
-        p {
-            + elem
         }
     }
 
