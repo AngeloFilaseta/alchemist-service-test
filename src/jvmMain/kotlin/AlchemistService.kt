@@ -21,11 +21,7 @@ class AlchemistService {
             val outputMonitor : OutputMonitor<T, P> = ServiceOutputMonitor()
             simulation.addOutputMonitor(outputMonitor)
 
-            val shoppingList = mutableListOf(
-                ShoppingListItem("Cucumbers", 1),
-                ShoppingListItem("Tomatoes", 2),
-                ShoppingListItem("Orange Juice", 3)
-            )
+            var simState = SimulationState(running = false)
 
             embeddedServer(Netty, 9090) {
                 install(ContentNegotiation) {
@@ -37,7 +33,7 @@ class AlchemistService {
                     allowMethod(HttpMethod.Delete)
                     anyHost()
                 }
-                install(io.ktor.server.plugins.compression.Compression) {
+                install(Compression) {
                     gzip()
                 }
 
@@ -45,7 +41,7 @@ class AlchemistService {
                     get("/") {
                         call.respondText(
                             this::class.java.classLoader.getResource("index.html")!!.readText(),
-                            io.ktor.http.ContentType.Text.Html
+                            ContentType.Text.Html
                         )
                     }
 
@@ -53,18 +49,19 @@ class AlchemistService {
                         resources("")
                     }
 
-                    route(ShoppingListItem.path) {
+                    route(SimulationState.path) {
                         get {
-                            call.respond(shoppingList)
+                            call.respond(simState)
                         }
+
                         post {
-                            shoppingList += call.receive<ShoppingListItem>()
-                            call.respond(io.ktor.http.HttpStatusCode.OK)
-                        }
-                        delete("/{id}") {
-                            val id = call.parameters["id"]?.toInt() ?: error("Invalid delete request")
-                            shoppingList.removeIf { it.id == id }
-                            call.respond(io.ktor.http.HttpStatusCode.OK)
+                            simState = call.receive()
+                            println(simState)
+                            when {
+                                simState.running -> simulation.play()
+                                else -> simulation.pause()
+                            }
+                            call.respond(HttpStatusCode.OK)
                         }
                     }
                 }

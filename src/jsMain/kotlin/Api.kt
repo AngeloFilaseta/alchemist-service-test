@@ -15,17 +15,13 @@ val jsonClient = HttpClient {
     }
 }
 
-suspend fun getShoppingList(): List<ShoppingListItem> {
-    return jsonClient.get(endpoint + ShoppingListItem.path).body()
+suspend fun getSimulationState(): SimulationState {
+    return jsonClient.get(endpoint + SimulationState.path).body()
 }
 
-suspend fun addShoppingListItem(shoppingListItem: ShoppingListItem) {
-    jsonClient.post(endpoint + ShoppingListItem.path) {
+suspend fun changeSimulationState(simulationState: SimulationState) {
+    jsonClient.post(endpoint + SimulationState.path) {
         contentType(ContentType.Application.Json)
-        setBody(shoppingListItem)
+        setBody(simulationState)
     }
-}
-
-suspend fun deleteShoppingListItem(shoppingListItem: ShoppingListItem) {
-    jsonClient.delete(endpoint + ShoppingListItem.path + "/${shoppingListItem.id}")
 }

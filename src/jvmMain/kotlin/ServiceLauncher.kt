@@ -19,7 +19,7 @@ object ServiceLauncher: SimulationLauncher() {
         println("SERVICE LAUNCHER IS ON")
         val simulation = prepareSimulation<Any, Nothing>(loader, parameters, emptyMap<String, Any>())
 
-        val job = GlobalScope.launch {
+        GlobalScope.launch {
             AlchemistService.launch(simulation)
         }
         println("simulation.run being called...")

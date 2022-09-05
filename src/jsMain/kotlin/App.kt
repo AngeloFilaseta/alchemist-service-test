@@ -1,46 +1,38 @@
 import react.*
 import kotlinx.coroutines.*
 import react.dom.html.ReactHTML.h1
-import react.dom.html.ReactHTML.li
-import react.dom.html.ReactHTML.ul
+import react.dom.html.ReactHTML.button
+import react.dom.html.ReactHTML.p
 
 private val scope = MainScope()
 
 val App = FC<Props> {
-    var shoppingList by useState(emptyList<ShoppingListItem>())
+    var simulationState by useState(SimulationState(false))
 
     useEffectOnce {
         scope.launch {
-            shoppingList = getShoppingList()
+            simulationState = getSimulationState()
         }
     }
 
     h1 {
-        +"Full-Stack Shopping List"
+        +"Alchemist Simulator Client"
     }
-
-    ul {
-        shoppingList.sortedByDescending(ShoppingListItem::priority).forEach { item ->
-            li {
-                key = item.toString()
-                onClick = {
-                    scope.launch {
-                        deleteShoppingListItem(item)
-                        shoppingList = getShoppingList()
-                    }
-                }
-                +"[${item.priority}] ${item.desc} "
-            }
-        }
+    p {
+        +simulationState.running.toString()
     }
-
-    inputComponent {
-        onSubmit = { input ->
-            val cartItem = ShoppingListItem(input.replace("!", ""), input.count { it == '!' })
+    button {
+        onClick = {
             scope.launch {
-                addShoppingListItem(cartItem)
-                shoppingList = getShoppingList()
+                changeSimulationState(SimulationState(!simulationState.running))
+                simulationState = getSimulationState()
             }
         }
+        if (simulationState.running) {
+            +"pause"
+        } else {
+            +"play"
+        }
     }
+
 }
