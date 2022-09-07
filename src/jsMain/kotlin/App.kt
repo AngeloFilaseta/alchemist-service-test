@@ -18,9 +18,11 @@ val App = FC<Props> {
     h1 {
         +"Alchemist Simulator Client"
     }
+
     p {
         +simulationState.running.toString()
     }
+
     button {
         onClick = {
             scope.launch {
