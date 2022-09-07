@@ -3,10 +3,13 @@ import it.unibo.alchemist.model.interfaces.Actionable
 import it.unibo.alchemist.model.interfaces.Environment
 import it.unibo.alchemist.model.interfaces.Position
 import it.unibo.alchemist.model.interfaces.Time
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
 
 class ServiceOutputMonitor<T, P : Position<out P>> : OutputMonitor<T, P> {
 
     override fun stepDone(environment: Environment<T, P>, reaction: Actionable<T>?, time: Time, step: Long) {
+        Json.encodeToString(environment)
         println("[environment: ${environment}, reaction: ${reaction}, time: ${time}, step: ${step}]")
     }
 
