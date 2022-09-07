@@ -7,7 +7,7 @@ import it.unibo.alchemist.model.interfaces.Time
 class ServiceOutputMonitor<T, P : Position<out P>> : OutputMonitor<T, P> {
 
     override fun stepDone(environment: Environment<T, P>, reaction: Actionable<T>?, time: Time, step: Long) {
-        println("[environment: ${environment}, reaction: ${reaction?.toString()}, time: ${time}, step: ${step}]")
+        println("[environment: ${environment}, reaction: ${reaction}, time: ${time}, step: ${step}]")
     }
 
     override fun initialized(environment: Environment<T, P>) {
@@ -17,4 +17,5 @@ class ServiceOutputMonitor<T, P : Position<out P>> : OutputMonitor<T, P> {
     override fun finished(environment: Environment<T, P>, time: Time, step: Long) {
         super.stepDone(environment, null, time, step)
     }
+
 }
