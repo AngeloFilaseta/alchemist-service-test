@@ -1,4 +1,3 @@
-import com.google.gson.Gson
 import it.unibo.alchemist.boundary.interfaces.OutputMonitor
 import it.unibo.alchemist.model.interfaces.Actionable
 import it.unibo.alchemist.model.interfaces.Environment
@@ -10,9 +9,7 @@ import kotlinx.serialization.json.*
 class ServiceOutputMonitor<T, P : Position<out P>> : OutputMonitor<T, P> {
 
     override fun stepDone(environment: Environment<T, P>, reaction: Actionable<T>?, time: Time, step: Long) {
-        val gson = Gson()
-        println(gson.toJson(environment.nodes[0]!!))
-        println("[environment: ${environment}, reaction: ${reaction}, time: ${time}, step: ${step}]")
+        println("[environment: ${environment.nodes.map { it.toR() }}, time: ${time}, step: ${step}]")
     }
 
     override fun initialized(environment: Environment<T, P>) {

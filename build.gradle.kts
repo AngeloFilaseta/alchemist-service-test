@@ -48,7 +48,6 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 api("it.unibo.alchemist:alchemist-api:$alchemistVersion")
-                implementation("com.google.code.gson:gson:2.8.5")
                 implementation("it.unibo.alchemist:alchemist:$alchemistVersion")
                 implementation("it.unibo.alchemist:alchemist-incarnation-sapere:$alchemistVersion")
                 implementation("io.ktor:ktor-serialization:$ktorVersion")

@@ -10,3 +10,8 @@ sealed interface RReaction {
     val outputContext: RContext
 
 }
+
+data class RReactionImpl(
+    override val inputContext: RContext,
+    override val outputContext: RContext
+) : RReaction
