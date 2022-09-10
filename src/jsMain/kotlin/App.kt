@@ -1,13 +1,17 @@
+
 import react.*
 import kotlinx.coroutines.*
 import react.dom.html.ReactHTML.h1
 import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.p
+import adapters.Switch
+import components.TextSwitch
 
 private val scope = MainScope()
 
 val App = FC<Props> {
     var simulationState by useState(SimulationState(false))
+    var serverComputation by useState(false)
 
     useEffectOnce {
         scope.launch {
@@ -35,6 +39,16 @@ val App = FC<Props> {
         } else {
             +"play"
         }
+    }
+
+    TextSwitch {
+        checked = serverComputation
+        onChange = {
+            _, _, _ ->
+            serverComputation = !serverComputation
+            console.log(serverComputation)
+        }
+        text = "Server Computation:"
     }
 
 }

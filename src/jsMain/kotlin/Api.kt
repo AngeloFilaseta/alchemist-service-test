@@ -7,6 +7,7 @@ import io.ktor.serialization.kotlinx.json.*
 
 import kotlinx.browser.window
 
+
 val endpoint = window.location.origin // only needed until https://youtrack.jetbrains.com/issue/KTOR-453 is resolved
 
 val jsonClient = HttpClient {
@@ -25,3 +26,5 @@ suspend fun changeSimulationState(simulationState: SimulationState) {
         setBody(simulationState)
     }
 }
+
+

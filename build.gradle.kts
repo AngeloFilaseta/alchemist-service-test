@@ -64,6 +64,7 @@ kotlin {
 
         val jsMain by getting {
             dependencies {
+                implementation(npm("react-switch", "7.0.0"))
                 implementation("io.ktor:ktor-client-js:$ktorVersion")
                 implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
