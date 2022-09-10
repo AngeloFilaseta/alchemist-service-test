@@ -11,6 +11,7 @@ sealed interface RReaction {
 
 }
 
+@Serializable
 data class RReactionImpl(
     override val inputContext: RContext,
     override val outputContext: RContext

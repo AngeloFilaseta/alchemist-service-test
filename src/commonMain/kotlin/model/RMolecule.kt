@@ -9,4 +9,5 @@ sealed interface RMolecule {
 
 }
 
+@Serializable
 data class RMoleculeImpl(override val name: String) : RMolecule

@@ -11,15 +11,14 @@ fun Molecule.toR() : RMolecule = RMoleculeImpl(this.name)
 
 fun <T> Reaction<T>.toR() : RReaction = RReactionImpl(this.inputContext.toR(), this.outputContext.toR())
 
-fun <T> Node<T>.toR(): RNode<T> {
+fun<T> Node<T>.toR(): RNode {
     return RNodeImpl(
         this.id,
-        this.contents.mapKeys { it.key.toR() }, //TODO this is so incorrect
         this.reactions.map{ it.toR() }
     )
 }
 
-fun <T, P : Position<out P>> Environment<T,P>.toR(): REnvironment<T> {
+fun <T, P : Position<out P>> Environment<T,P>.toR(): REnvironment {
     return REnvironmentImpl(
         this.dimensions,
         this.nodes.map { it.toR() }

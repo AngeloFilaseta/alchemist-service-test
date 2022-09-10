@@ -18,7 +18,7 @@ import model.REnvironment
 class AlchemistService {
     companion object {
 
-         fun <T, P : Position<out P>> launch(simulation: Simulation<T, P>, model: Model<T>) {
+         fun <T, P : Position<out P>> launch(simulation: Simulation<T, P>, model: Model) {
 
              val outputMonitor : OutputMonitor<T, P> = ServiceOutputMonitor(model)
              simulation.addOutputMonitor(outputMonitor)

@@ -5,7 +5,7 @@ import it.unibo.alchemist.model.interfaces.Position
 import it.unibo.alchemist.model.interfaces.Time
 
 
-class ServiceOutputMonitor<T, P : Position<out P>>(private val model: Model<T>): OutputMonitor<T, P> {
+class ServiceOutputMonitor<T, P : Position<out P>>(private val model: Model): OutputMonitor<T, P> {
 
     override fun stepDone(environment: Environment<T, P>, reaction: Actionable<T>?, time: Time, step: Long) {
         model.environment = environment.toR()
