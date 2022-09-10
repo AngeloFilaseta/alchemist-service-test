@@ -13,61 +13,64 @@ import io.ktor.server.routing.*
 import it.unibo.alchemist.boundary.interfaces.OutputMonitor
 import it.unibo.alchemist.core.interfaces.Simulation
 import it.unibo.alchemist.model.interfaces.Position
+import model.REnvironment
 
 class AlchemistService {
     companion object {
-        fun <T,P : Position<out P>> launch(simulation: Simulation<T, P>) {
 
-            val model = Model<T>()
+         fun <T, P : Position<out P>> launch(simulation: Simulation<T, P>, model: Model<T>) {
 
-            val outputMonitor : OutputMonitor<T, P> = ServiceOutputMonitor()
-            simulation.addOutputMonitor(outputMonitor)
+             val outputMonitor : OutputMonitor<T, P> = ServiceOutputMonitor(model)
+             simulation.addOutputMonitor(outputMonitor)
 
-            var simState = SimulationState(running = false)
+             embeddedServer(Netty, 9090) {
+                 install(ContentNegotiation) {
+                     json()
+                 }
+                 install(CORS) {
+                     allowMethod(HttpMethod.Get)
+                     allowMethod(HttpMethod.Post)
+                     allowMethod(HttpMethod.Delete)
+                     anyHost()
+                 }
+                 install(Compression) {
+                     gzip()
+                 }
 
-            embeddedServer(Netty, 9090) {
-                install(ContentNegotiation) {
-                    json()
-                }
-                install(CORS) {
-                    allowMethod(HttpMethod.Get)
-                    allowMethod(HttpMethod.Post)
-                    allowMethod(HttpMethod.Delete)
-                    anyHost()
-                }
-                install(Compression) {
-                    gzip()
-                }
+                 routing {
+                     get("/") {
+                         call.respondText(
+                             this::class.java.classLoader.getResource("index.html")!!.readText(),
+                             ContentType.Text.Html
+                         )
+                     }
 
-                routing {
-                    get("/") {
-                        call.respondText(
-                            this::class.java.classLoader.getResource("index.html")!!.readText(),
-                            ContentType.Text.Html
-                        )
-                    }
+                     static("/") {
+                         resources("")
+                     }
 
-                    static("/") {
-                        resources("")
-                    }
+                     route(REnvironment.path) {
+                         get {
+                             call.respond(model.environment)
+                         }
+                     }
 
-                    route(SimulationState.path) {
-                        get {
-                            call.respond(simState)
-                        }
+                     route(SimulationState.path) {
+                         get {
+                             call.respond(model.simState)
+                         }
 
-                        post {
-                            simState = call.receive()
-                            println(simState)
-                            when {
-                                simState.running -> simulation.play()
-                                else -> simulation.pause()
-                            }
-                            call.respond(HttpStatusCode.OK)
-                        }
-                    }
-                }
-            }.start(wait = true)
+                         post {
+                             model.simState = call.receive()
+                             when {
+                                 model.simState .running -> simulation.play()
+                                 else -> simulation.pause()
+                             }
+                             call.respond(HttpStatusCode.OK)
+                         }
+                     }
+                 }
+             }.start(wait = true)
         }
     }
 

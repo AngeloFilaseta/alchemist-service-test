@@ -1,4 +1,4 @@
-package model.interfaces
+package model
 
 import kotlinx.serialization.Serializable
 

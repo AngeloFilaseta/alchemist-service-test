@@ -3,13 +3,12 @@ import it.unibo.alchemist.model.interfaces.Actionable
 import it.unibo.alchemist.model.interfaces.Environment
 import it.unibo.alchemist.model.interfaces.Position
 import it.unibo.alchemist.model.interfaces.Time
-import kotlinx.serialization.*
-import kotlinx.serialization.json.*
 
-class ServiceOutputMonitor<T, P : Position<out P>> : OutputMonitor<T, P> {
+
+class ServiceOutputMonitor<T, P : Position<out P>>(private val model: Model<T>): OutputMonitor<T, P> {
 
     override fun stepDone(environment: Environment<T, P>, reaction: Actionable<T>?, time: Time, step: Long) {
-        println("[environment: ${environment.nodes.map { it.toR() }}, time: ${time}, step: ${step}]")
+        model.environment = environment.toR()
     }
 
     override fun initialized(environment: Environment<T, P>) {

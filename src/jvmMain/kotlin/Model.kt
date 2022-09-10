@@ -1,7 +1,13 @@
-import model.interfaces.RNode
+import model.REnvironment
+import model.RNode
 
-class Model<T> {
+interface Model<T> {
 
-    lateinit var nodes : List<RNode<T>>
+    var environment : REnvironment<T>
 
+    var simState: SimulationState
+}
+
+class ModelImpl<T>(override var simState: SimulationState = SimulationState(false)) : Model<T> {
+    override lateinit var environment: REnvironment<T>
 }
