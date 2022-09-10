@@ -12,7 +12,9 @@ sealed interface REnvironment {
     val nodeCount : Int
 
     companion object {
-        const val path = "/environment"
+        private const val environment =  "/environment"
+        const val pathClient = "${environment}/client"
+        const val pathServer = "${environment}/server"
     }
 }
 

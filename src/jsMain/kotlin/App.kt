@@ -1,10 +1,8 @@
-
 import react.*
 import kotlinx.coroutines.*
 import react.dom.html.ReactHTML.h1
 import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.p
-import adapters.Switch
 import components.TextSwitch
 
 private val scope = MainScope()
@@ -12,6 +10,7 @@ private val scope = MainScope()
 val App = FC<Props> {
     var simulationState by useState(SimulationState(false))
     var serverComputation by useState(false)
+    var computationResult by useState(0)
 
     useEffectOnce {
         scope.launch {
@@ -21,10 +20,6 @@ val App = FC<Props> {
 
     h1 {
         +"Alchemist Simulator Client"
-    }
-
-    p {
-        +simulationState.running.toString()
     }
 
     button {
@@ -41,12 +36,28 @@ val App = FC<Props> {
         }
     }
 
+    button {
+        onClick = {
+            scope.launch {
+                computationResult = if(serverComputation) {
+                    getEnvironmentServerComputation()
+                } else {
+                    RComputation.compute(getEnvironmentClientComputation())
+                }
+            }
+        }
+        +"compute"
+    }
+
+    p {
+        +"Computation result: $computationResult"
+    }
+
     TextSwitch {
         checked = serverComputation
         onChange = {
             _, _, _ ->
             serverComputation = !serverComputation
-            console.log(serverComputation)
         }
         text = "Server Computation:"
     }

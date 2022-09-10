@@ -67,9 +67,15 @@ object ServiceLauncher: SimulationLauncher() {
                     resources("")
                 }
 
-                route(REnvironment.path) {
+                route(REnvironment.pathClient) {
                     get {
                         call.respond(model.environment)
+                    }
+                }
+
+                route(REnvironment.pathServer) {
+                    get {
+                        call.respond(RComputation.compute(model.environment))
                     }
                 }
 

@@ -6,6 +6,7 @@ import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.json.*
 
 import kotlinx.browser.window
+import model.REnvironment
 
 
 val endpoint = window.location.origin // only needed until https://youtrack.jetbrains.com/issue/KTOR-453 is resolved
@@ -26,5 +27,15 @@ suspend fun changeSimulationState(simulationState: SimulationState) {
         setBody(simulationState)
     }
 }
+
+suspend fun getEnvironmentServerComputation() : Int {
+    return jsonClient.get(endpoint + REnvironment.pathServer).body()
+}
+
+suspend fun getEnvironmentClientComputation() : REnvironment {
+    return jsonClient.get(endpoint + REnvironment.pathClient).body()
+}
+
+
 
 
