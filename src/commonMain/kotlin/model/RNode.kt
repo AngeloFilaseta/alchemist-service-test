@@ -7,11 +7,11 @@ sealed interface RNode {
 
     val id: Int
 
-    //val reactions: List<RReaction>
+    val reactions: List<RReaction>
 }
 
 @Serializable
 data class RNodeImpl(
-    override val id: Int
-    //override val reactions: List<RReaction>
+    override val id: Int,
+    override val reactions: List<RReaction>
 ) : RNode
