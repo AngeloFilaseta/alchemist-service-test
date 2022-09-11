@@ -4,10 +4,8 @@ import model.*
 fun Context.toR() : RContext = when {
     this == Context.GLOBAL -> RContext.GLOBAL
     this == Context.LOCAL -> RContext.LOCAL
-    else -> RContext.NEIGHBORHOOD;
+    else -> RContext.NEIGHBORHOOD
 }
-
-fun Molecule.toR() : RMolecule = RMoleculeImpl(this.name)
 
 fun <T> Reaction<T>.toR() : RReaction = RReactionImpl(this.inputContext.toR(), this.outputContext.toR())
 
