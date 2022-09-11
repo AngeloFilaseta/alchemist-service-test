@@ -13,8 +13,8 @@ fun <T> Reaction<T>.toR() : RReaction = RReactionImpl(this.inputContext.toR(), t
 
 fun<T> Node<T>.toR(): RNode {
     return RNodeImpl(
-        this.id,
-        this.reactions.map{ it.toR() }
+        this.id//,
+       // this.reactions.map{ it.toR() }
     )
 }
 

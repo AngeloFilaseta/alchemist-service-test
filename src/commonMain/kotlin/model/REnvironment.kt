@@ -3,13 +3,13 @@ package model
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed interface REnvironment {
+sealed class REnvironment {
 
-    val dimensions: Int
+    abstract val dimensions: Int
 
-    val nodes: List<RNode>
+    abstract val nodes: List<RNode>
 
-    val nodeCount : Int
+    abstract val nodeCount : Int
 
     companion object {
         private const val environment =  "/environment"
@@ -22,6 +22,6 @@ sealed interface REnvironment {
 data class REnvironmentImpl(
     override val dimensions: Int,
     override val nodes: List<RNode>
-) : REnvironment {
+) : REnvironment() {
     override val nodeCount: Int = nodes.size
 }
